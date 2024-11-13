@@ -115,12 +115,14 @@ class ChatMembersActivity : AppCompatActivity() {
 
     private inner class ContactHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val contactTitle: TextView = itemView.findViewById<TextView>(R.id.title_contact)
+        private val contactUsername: TextView = itemView.findViewById<TextView>(R.id.title_username_contact)
 
         lateinit var contact: Contact
 
         fun bind(contact: Contact) {
             this.contact = contact
             contactTitle.text = contact.login
+            contactUsername.text = contact.username
         }
     }
 

@@ -14,7 +14,6 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var usernameEditText: EditText
     private lateinit var loginEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var passwordAgainEditText: EditText
@@ -29,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
         passwordAgainEditText = findViewById(R.id.register_password_edit_again)
         registerButton = findViewById(R.id.register_button)
         errorMessageTextView = findViewById(R.id.error_register_message)
-        usernameEditText = findViewById(R.id.register_username_edit)
 
         registerButton.setOnClickListener {
             register()
@@ -38,7 +36,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun register() {
         val registerRequest = RegisterRequest()
-        registerRequest.userName = usernameEditText.text.toString().trim()
         registerRequest.login = loginEditText.text.toString().trim()
         registerRequest.password = passwordEditText.text.toString().trim()
         val againPassword = passwordAgainEditText.text.toString().trim()
@@ -47,9 +44,6 @@ class RegisterActivity : AppCompatActivity() {
             return
         } else if (registerRequest.password.isBlank()) {
             errorMessageTextView.text = "Введите пароль"
-            return
-        } else if (registerRequest.userName.isBlank()) {
-            errorMessageTextView.text = "Введите имя"
             return
         } else if (againPassword.isBlank()) {
             errorMessageTextView.text = "Введите пароль повторно"
@@ -68,6 +62,5 @@ class RegisterActivity : AppCompatActivity() {
                     errorMessageTextView.text = "Произошла ошибка"
                 }
         })
-
     }
 }

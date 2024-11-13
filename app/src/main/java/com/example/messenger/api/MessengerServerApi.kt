@@ -6,6 +6,7 @@ import com.example.messenger.api.dto.CreateContactRequest
 import com.example.messenger.api.dto.LoginRequest
 import com.example.messenger.api.dto.LoginResponse
 import com.example.messenger.api.dto.RegisterRequest
+import com.example.messenger.api.dto.UsernameRequest
 import com.example.messenger.domain.Chat
 import com.example.messenger.domain.Contact
 import com.example.messenger.domain.Message
@@ -45,4 +46,7 @@ interface MessengerServerApi {
 
     @GET("/api/v1/chat/messages")
     fun getMessages(@Query("chat-id") chatId: String, @Query("page-id") pageId: String, @Header("Authorization") token: String): Call<List<Message>>
+
+    @POST("/api/v1/user/set/username")
+    fun setUsername(@Body userNameRequest: UsernameRequest, @Header("Authorization") token: String):Call<ResponseBody>
 }

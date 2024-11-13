@@ -6,8 +6,10 @@
      <item
           android:id="@+id/chat_create"
           android:title="@string/chat_create_title"/>
-
      <item
           android:id="@+id/contact"
           android:title="@string/contacts_title" />
+     <item
+         android:id="@+id/username_set"
+         android:title="@string/username_title" />
 </menu>

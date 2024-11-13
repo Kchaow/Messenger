@@ -26,4 +26,8 @@
     <string name="create_chat_button">Создать чат</string>
     <string name="send_button">></string>
     <string name="register_username_textView">Имя:</string>
+    <string name="username_set_header">Установка имени пользователя</string>
+    <string name="username_button">Установить</string>
+    <string name="username_title">Установить имя пользователя</string>
+    <string name="contact_title_lable_username">Имя пользователя</string>
 </resources>

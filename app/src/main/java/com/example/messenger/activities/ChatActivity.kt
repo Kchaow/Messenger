@@ -100,6 +100,9 @@ class ChatActivity : AppCompatActivity() {
             if (response.code() == 200) {
                 adapter = MessageAdapter(response.body()!!)
                 recyclerView.adapter = adapter
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                val lastPosition = recyclerView.adapter!!.itemCount - 1
+                layoutManager!!.scrollToPositionWithOffset(lastPosition, 0)
                 Log.i(TAG, "Get messages success")
             } else {
                 Log.i(TAG, "Unable to get messages")
@@ -129,7 +132,10 @@ class ChatActivity : AppCompatActivity() {
                 messageLayout.gravity = Gravity.END
             }
             contentMessage.text = message.text
-            senderMessage.text = message.senderId
+            senderMessage.text = message.userName
+            if (senderMessage.text.isBlank()) {
+                senderMessage.text = "<имя не установлено>"
+            }
         }
     }
 

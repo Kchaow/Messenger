@@ -9,6 +9,7 @@ import com.example.messenger.api.dto.CreateContactRequest
 import com.example.messenger.api.dto.LoginRequest
 import com.example.messenger.api.dto.LoginResponse
 import com.example.messenger.api.dto.RegisterRequest
+import com.example.messenger.api.dto.UsernameRequest
 import com.example.messenger.domain.Chat
 import com.example.messenger.domain.Contact
 import com.example.messenger.domain.Message
@@ -180,6 +181,23 @@ class MessengerServer {
             }
 
             override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+                responseLiveData.value = response
+            }
+        })
+        return responseLiveData
+    }
+
+    fun setUsername(usernameRequest: UsernameRequest, accessToken: String): LiveData<Response<ResponseBody>> {
+        val responseLiveData: MutableLiveData<Response<ResponseBody>> = MutableLiveData()
+        val messengerServerApiRequest: Call<ResponseBody> = messengerServerApi.setUsername(usernameRequest, "Bearer $accessToken")
+
+        messengerServerApiRequest.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e(TAG, "Unable to make request", t)
+                responseLiveData.value = null
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 responseLiveData.value = response
             }
         })

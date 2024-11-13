@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.UsernameSetActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username_set_header"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/username_edit_layout"
+        android:layout_marginBottom="20dp"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:maxWidth="300dp"
+        android:textFontWeight="700"/>
+
+    <LinearLayout
+        android:id="@+id/username_edit_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/error_username" >
+        <TextView
+            android:id="@+id/register_username_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:text="@string/register_username_textView" />
+        <EditText
+            android:id="@+id/username_edit"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:autofillHints="login"
+            android:inputType="text"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/error_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/username_button"
+        android:textSize="15sp"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/error_text"/>
+
+    <Button
+        android:layout_marginTop="25dp"
+        android:id="@+id/username_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username_button"/>
+
+</RelativeLayout>

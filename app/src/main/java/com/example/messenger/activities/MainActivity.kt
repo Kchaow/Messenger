@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -108,6 +107,11 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_ACCESS_TOKEN, accessToken)
             startActivity(intent)
             return true
+        } else if (id == R.id.username_set) {
+            val intent = Intent(this@MainActivity, UsernameSetActivity::class.java)
+            intent.putExtra(EXTRA_ACCESS_TOKEN, accessToken)
+            startActivity(intent)
+            return true
         }
 
         return super.onOptionsItemSelected(item)
@@ -173,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
     private inner class ChatHolder(view: View) : RecyclerView.ViewHolder(view), View.OnCreateContextMenuListener, View.OnClickListener {
         private val chatTitle: TextView = itemView.findViewById<TextView>(R.id.title_chat)
-        private val chatOwner: TextView = itemView.findViewById<TextView>(R.id.owner_chat)
+//        private val chatOwner: TextView = itemView.findViewById<TextView>(R.id.owner_chat)
 
         lateinit var chat: Chat
 
@@ -185,7 +189,7 @@ class MainActivity : AppCompatActivity() {
         fun bind(chat: Chat) {
             this.chat = chat
             chatTitle.text = chat.name
-            chatOwner.text = chat.ownerId
+//            chatOwner.text = chat.ownerId
         }
 
         override fun onClick(v: View?) {
