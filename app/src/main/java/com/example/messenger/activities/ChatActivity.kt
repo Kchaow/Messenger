@@ -19,6 +19,7 @@ import com.example.messenger.R
 import com.example.messenger.api.ChatWebSocketClient
 import com.example.messenger.api.MessengerServer
 import com.example.messenger.domain.Message
+import com.google.gson.Gson
 import org.java_websocket.client.WebSocketClient
 import retrofit2.Response
 import java.net.URI
@@ -26,10 +27,11 @@ import java.net.URI
 private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
+    private val gson = Gson()
     private lateinit var chatHeader : TextView
     private var chatName : String? = null
     private var chatId : String? = null
-    private var userId : String? = null
+    var userId : String? = null
     private var accessToken: String? = null
     private lateinit var chatHeaderLayout: LinearLayout
     private lateinit var recyclerView: RecyclerView
@@ -54,7 +56,9 @@ class ChatActivity : AppCompatActivity() {
         val serverUri = URI("ws://193.124.33.25:8080/api/v1/messenger/connect?chat-id=${chatId}")
         val headers = mapOf(Pair("Authorization", "Bearer $accessToken"))
         webSocketClient = ChatWebSocketClient(serverUri, headers) {
-            updateRecyclerView()
+            runOnUiThread {
+                updateRecyclerView()
+            }
         }
 
         chatHeaderLayout.setOnClickListener {
@@ -94,21 +98,16 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView() {
-        val messageServerLiveData: LiveData<Response<List<Message>>> = MessengerServer().getMessages(chatId!!, "0", accessToken!!)
+        val messageServerLiveData: LiveData<List<Message>> = MessengerServer().getAllMessages(chatId!!, "0", accessToken!!)
         messageServerLiveData.observe(this, Observer {
-                response ->
-            if (response.code() == 200) {
-                adapter = MessageAdapter(response.body()!!)
-                recyclerView.adapter = adapter
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                val lastPosition = recyclerView.adapter!!.itemCount - 1
-                layoutManager!!.scrollToPositionWithOffset(lastPosition, 0)
-                Log.i(TAG, "Get messages success")
-            } else {
-                Log.i(TAG, "Unable to get messages")
-            }
+                list ->
+            adapter = MessageAdapter(list)
+            recyclerView.adapter = adapter
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+            val lastPosition = recyclerView.adapter!!.itemCount - 1
+            layoutManager!!.scrollToPositionWithOffset(lastPosition, 0)
+            Log.i(TAG, "Get messages success")
         })
-
     }
 
     private fun openMembers() {
@@ -128,8 +127,11 @@ class ChatActivity : AppCompatActivity() {
 
         fun bind(message: Message) {
             this.message = message
+            //Log.i(TAG, "${message.senderId} ${message.userName} vs $userId")
             if (message.senderId == userId) {
                 messageLayout.gravity = Gravity.END
+            } else {
+                messageLayout.gravity = Gravity.START
             }
             contentMessage.text = message.text
             senderMessage.text = message.userName

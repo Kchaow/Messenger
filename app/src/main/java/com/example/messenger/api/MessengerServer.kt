@@ -187,6 +187,32 @@ class MessengerServer {
         return responseLiveData
     }
 
+    fun getAllMessages(chatId: String, pageId: String, accessToken: String): LiveData<List<Message>> {
+        val allMessagesLiveData: MutableLiveData<List<Message>> = MutableLiveData()
+        val allMessages: MutableList<Message> = mutableListOf()
+
+        fun fetchMessages(currentPageId: Int) {
+            getMessages(chatId, currentPageId.toString(), accessToken).observeForever { response ->
+                response?.let {
+                    if (it.isSuccessful) {
+                        val messages = it.body() ?: emptyList()
+                        if (messages.isNotEmpty()) {
+                            allMessages.addAll(messages)
+                            fetchMessages(currentPageId+1) // Предполагаем, что следующая страница начинается с времени последнего сообщения
+                        } else {
+                            allMessagesLiveData.value = allMessages.sortedBy { m -> m.getSendingTimeAsLocalDateTime() }
+                        }
+                    } else {
+                        allMessagesLiveData.value = emptyList() // Обработка ошибки
+                    }
+                }
+            }
+        }
+
+        fetchMessages(pageId.toInt())
+        return allMessagesLiveData
+    }
+
     fun setUsername(usernameRequest: UsernameRequest, accessToken: String): LiveData<Response<ResponseBody>> {
         val responseLiveData: MutableLiveData<Response<ResponseBody>> = MutableLiveData()
         val messengerServerApiRequest: Call<ResponseBody> = messengerServerApi.setUsername(usernameRequest, "Bearer $accessToken")

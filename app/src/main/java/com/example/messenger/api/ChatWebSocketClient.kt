@@ -1,6 +1,7 @@
 package com.example.messenger.api
 
 import android.util.Log
+import com.example.messenger.activities.ChatActivity
 import com.example.messenger.domain.Message
 import com.google.gson.Gson
 import org.java_websocket.client.WebSocketClient
@@ -16,10 +17,9 @@ class ChatWebSocketClient(serverUri: URI,  httpHeaders: Map<String, String>, pri
 
     }
 
-    override fun onMessage(message: String?) {
-        Log.i(TAG, "Message received $message")
-        //добавлять в list сообщение
-        messageListener(message!!)
+    override fun onMessage(text: String?) {
+        Log.i(TAG, "Message received $text")
+        messageListener.invoke(text!!)
     }
 
     override fun onClose(code: Int, reason: String?, remote: Boolean) {
